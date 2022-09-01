@@ -18,6 +18,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             return View();
         }
 
+        // right click the view. In this case it is "Create()", then add view then razor view to create page.
         public IActionResult Create()
         {
             return View();
