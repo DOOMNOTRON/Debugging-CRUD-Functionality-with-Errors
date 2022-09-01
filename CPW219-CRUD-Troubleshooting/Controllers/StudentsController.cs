@@ -41,13 +41,18 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             return View(p);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             //get the product by id
-            Student p = StudentDb.GetStudent(context, id);
+            Student? studentToEdit = await context.Students.FindAsync(id);
+
+            if (studentToEdit == null)
+            {
+                return NotFound();
+            }
 
             //show it on web page
-            return View();
+            return View(studentToEdit);
         }
 
         [HttpPost]
