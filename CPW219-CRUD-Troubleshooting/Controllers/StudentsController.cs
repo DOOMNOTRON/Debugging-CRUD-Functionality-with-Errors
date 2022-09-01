@@ -19,17 +19,19 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         }
 
         // right click the view. In this case it is "Create()", then add view then razor view to create page.
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Student p)
+        public async Task<IActionResult> Create(Student p)
         {
             if (ModelState.IsValid)
             {
-                StudentDb.Add(p, context);
+                context.Students.AddAsync(p);
+                await context.SaveChangesAsync();
                 ViewData["Message"] = $"{p.Name} was added!";
                 return View();
             }
