@@ -63,7 +63,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
                 context.Students.Update(studentModel);
                 await context.SaveChangesAsync();
                 
-                ViewData["Message"] = "Student Updated!";
+                TempData["Message"] = $"{studentModel.Name} was updated successfully!";
                 return RedirectToAction("Index");
             }
             //return view with errors
