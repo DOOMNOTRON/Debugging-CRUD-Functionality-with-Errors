@@ -1,5 +1,6 @@
 ﻿using CPW219_CRUD_Troubleshooting.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CPW219_CRUD_Troubleshooting.Controllers
 {
@@ -12,10 +13,10 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             context = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Student> products = StudentDb.GetStudents(context);
-            return View();
+            List<Student> students = await context.Students.ToListAsync();
+            return View(students);
         }
 
         // right click the view. In this case it is "Create()", then add view then razor view to create page.
