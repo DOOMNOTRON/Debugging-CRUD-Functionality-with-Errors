@@ -56,16 +56,18 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Student p)
+        public async Task<IActionResult> Edit(Student studentModel)
         {
             if (ModelState.IsValid)
             {
-                StudentDb.Update(context, p);
-                ViewData["Message"] = "Product Updated!";
-                return View(p);
+                context.Students.Update(studentModel);
+                await context.SaveChangesAsync();
+                
+                ViewData["Message"] = "Student Updated!";
+                return RedirectToAction("Index");
             }
             //return view with errors
-            return View(p);
+            return View(studentModel);
         }
 
         public IActionResult Delete(int id)
