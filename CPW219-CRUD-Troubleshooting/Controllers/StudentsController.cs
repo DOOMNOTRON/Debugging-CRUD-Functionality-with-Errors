@@ -70,21 +70,36 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             return View(studentModel);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Student p = StudentDb.GetStudent(context, id);
-            return View(p);
+            Student? studentToDelete = await context.Students.FindAsync(id);
+            
+            if (studentToDelete == null)
+            {
+                return NotFound();
+            }
+            return View(studentToDelete);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirm(int id)
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
-            //Get Product from database
-            Student p = StudentDb.GetStudent(context, id);
+            Student studentToDelete = await context.Students.FindAsync(id);
+            
+            
+            if(studentToDelete != null)
+            {
+                context.Students.Remove(studentToDelete);
+                await context.SaveChangesAsync();
 
-            StudentDb.Delete(context, p);
+                TempData["Message"] = studentToDelete.Name + " was deleted successfully!";
+                return RedirectToAction("Index");
+            }
 
+            TempData["Message"] = "This student was already deleted.";
             return RedirectToAction("Index");
+
+
         }
     }
 }
